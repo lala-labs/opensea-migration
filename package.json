@@ -1,0 +1,55 @@
+{
+  "name": "opensea-migration",
+  "description": "A Solidity contract base to migrate OpenSea Shared Storefront tokens without asking for `approveAll`.",
+  "version": "1.0.0",
+  "files": [
+    "/contracts/**/*.sol",
+    "/build/contracts/*.json",
+    "!/contracts/mocks/**/*"
+  ],
+  "scripts": {
+    "node": "hardhat node",
+    "test": "hardhat test",
+    "test:gas": "REPORT_GAS=true npx hardhat test",
+    "coverage": "REPORT_COVERAGE=true npx hardhat coverage",
+    "lint": "npm run lint:js && npm run lint:sol",
+    "lint:js": "eslint --ignore-path .gitignore . --fix",
+    "lint:sol": "prettier --write \"contracts/**/*.sol\"",
+    "update-version": "scripts/release/update-version.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lala-labs/opensea-migration.git"
+  },
+  "keywords": [
+    "solidity",
+    "ethereum",
+    "smart",
+    "contracts",
+    "opensea",
+    "migration"
+  ],
+  "author": "LaLa Labs <maik@shackergang.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lala-labs/opensea-migration/issues"
+  },
+  "homepage": "https://github.com/lala-labs/opensea-migration",
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.6",
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "@openzeppelin/contracts": "^4.6.0",
+    "@openzeppelin/test-helpers": "^0.5.15",
+    "chai": "^4.3.6",
+    "eslint": "^8.15.0",
+    "eslint-plugin-mocha": "^10.0.4",
+    "eslint-plugin-node": "^11.1.0",
+    "ethereum-waffle": "^3.4.4",
+    "ethers": "^5.6.6",
+    "hardhat": "^2.9.6",
+    "hardhat-gas-reporter": "^1.0.8",
+    "prettier": "^2.6.2",
+    "prettier-plugin-solidity": "^1.0.0-beta.19",
+    "solidity-coverage": "^0.7.21"
+  }
+}
