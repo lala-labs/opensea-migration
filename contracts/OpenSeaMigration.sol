@@ -26,24 +26,28 @@ contract OpenSeaMigration is ERC1155Receiver {
 
     // migration of a single token
     function onERC1155Received(
-        address,
+        address /* operator */,
         address from,
         uint256 id,
         uint256 value,
         bytes calldata data
     ) external override returns (bytes4) {
+        require(msg.sender == OPENSEA_STORE, 'OSMigration: Sender not approved');
+
         _migrateLegacyToken(from, id, value, data);
         return IERC1155Receiver.onERC1155Received.selector;
     }
 
     // migration of multiple tokens
     function onERC1155BatchReceived(
-        address,
+        address /* operator */,
         address from,
         uint256[] calldata ids,
         uint256[] calldata values,
         bytes calldata data
     ) external override returns (bytes4) {
+        require(msg.sender == OPENSEA_STORE, 'OSMigration: Sender not approved');
+
         for (uint256 i; i < ids.length; i++) {
             _migrateLegacyToken(from, ids[i], values[i], data);
         }
