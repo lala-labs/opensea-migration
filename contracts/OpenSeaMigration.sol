@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenSeaMigration v1.1.0
+// OpenSeaMigration v1.1.2
 // Creator: LaLa Labs
 
 pragma solidity ^0.8.14;
@@ -32,7 +32,7 @@ contract OpenSeaMigration is ERC1155Receiver {
         uint256 value,
         bytes calldata data
     ) external override returns (bytes4) {
-        require(msg.sender == OPENSEA_STORE, 'OSMigration: Sender not approved');
+        require(msg.sender == address(OPENSEA_STORE), 'OSMigration: Only accepting OpenSea assets');
 
         _migrateLegacyToken(from, id, value, data);
         return IERC1155Receiver.onERC1155Received.selector;
@@ -46,7 +46,7 @@ contract OpenSeaMigration is ERC1155Receiver {
         uint256[] calldata values,
         bytes calldata data
     ) external override returns (bytes4) {
-        require(msg.sender == OPENSEA_STORE, 'OSMigration: Sender not approved');
+        require(msg.sender == address(OPENSEA_STORE), 'OSMigration: Only accepting OpenSea assets');
 
         for (uint256 i; i < ids.length; i++) {
             _migrateLegacyToken(from, ids[i], values[i], data);

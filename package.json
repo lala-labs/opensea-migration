@@ -1,7 +1,7 @@
 {
   "name": "opensea-migration",
   "description": "A Solidity contract base to migrate OpenSea Shared Storefront tokens without asking for `approveAll`.",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "files": [
     "/contracts/**/*.sol",
     "/build/contracts/*.json",
