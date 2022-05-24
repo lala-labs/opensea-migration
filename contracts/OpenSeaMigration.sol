@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenSeaMigration v1.0.0
+// OpenSeaMigration v1.1.0
 // Creator: LaLa Labs
 
 pragma solidity ^0.8.14;
