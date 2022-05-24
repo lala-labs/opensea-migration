@@ -8,13 +8,18 @@ import '@openzeppelin/contracts/token/ERC1155/IERC1155.sol';
 import '@openzeppelin/contracts/token/ERC1155/utils/ERC1155Receiver.sol';
 
 contract OpenSeaMigration is ERC1155Receiver {
+    address public constant BURN_ADDRESS = address(0x000000000000000000000000000000000000dEaD);
+
     IERC1155 public immutable OPENSEA_STORE;
 
     uint160 internal immutable MAKER;
 
     event TokenMigrated(address account, uint256 legacyTokenId, uint256 amount);
 
-    constructor(address openSeaStoreAddress, address makerAddress) {
+    constructor(
+        address openSeaStoreAddress,
+        address makerAddress
+    ) {
         OPENSEA_STORE = IERC1155(openSeaStoreAddress);
         MAKER = uint160(makerAddress);
     }
@@ -81,6 +86,35 @@ contract OpenSeaMigration is ERC1155Receiver {
         bytes calldata data
     ) internal virtual {
         revert('OSMigration: Not implemented');
+    }
+
+    /**
+     * @dev Burn the token. Since OpenSea Shared Storefront does not support real burn, transfer to dead address.
+     *
+     * @param legacyTokenId The OpenSea token ID
+     * @param amount The amount of legacy tokens being migrated.
+     */
+    function _burn(
+        uint256 legacyTokenId,
+        uint256 amount
+    ) internal {
+        OPENSEA_STORE.safeTransferFrom(address(this), BURN_ADDRESS, legacyTokenId, amount, "");
+    }
+
+    /**
+     * @dev Transfer to MAKER. An alternative way for burning, which allows the MAKER to make updates to the metadata,
+     *   unless it has been frozen before. Useful to change the NFT image to a blank one for example.
+     *
+     * @param legacyTokenId The OpenSea token ID
+     * @param amount The amount of legacy tokens being migrated.
+     * @param data Additional data with no specified format
+     */
+    function _transferToMaker(
+        uint256 legacyTokenId,
+        uint256 amount,
+        bytes calldata data
+    ) internal {
+        OPENSEA_STORE.safeTransferFrom(address(this), address(MAKER), legacyTokenId, amount, data);
     }
 
     /**
