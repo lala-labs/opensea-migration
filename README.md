@@ -25,7 +25,7 @@ interface NewContract {
 }
 
 contract MyMigration is OpenSeaMigration {
-  Shackers public immutable NEW_CONTRACT;
+  NewContract public immutable NEW_CONTRACT;
 
   constructor(
     address newContractAddress,
