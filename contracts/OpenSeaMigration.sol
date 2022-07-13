@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenSeaMigration v1.2.0
+// OpenSeaMigration v1.2.1
 // Creator: LaLa Labs
 
 pragma solidity ^0.8.14;
@@ -7,7 +7,7 @@ pragma solidity ^0.8.14;
 import '@openzeppelin/contracts/token/ERC1155/IERC1155.sol';
 import '@openzeppelin/contracts/token/ERC1155/utils/ERC1155Receiver.sol';
 
-contract OpenSeaMigration is ERC1155Receiver {
+abstract contract OpenSeaMigration is ERC1155Receiver {
     address public constant BURN_ADDRESS = address(0x000000000000000000000000000000000000dEaD);
 
     IERC1155 public immutable OPENSEA_STORE;
@@ -98,9 +98,7 @@ contract OpenSeaMigration is ERC1155Receiver {
         uint256 internalTokenId,
         uint256 amount,
         bytes calldata data
-    ) internal virtual {
-        revert('OSMigration: Not implemented');
-    }
+    ) internal virtual;
 
     /**
      * @dev Callback invoked after tokens have been processed. Exposes the same info as ERC1155Receiver.
