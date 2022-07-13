@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenSeaMigration v1.1.2
+// OpenSeaMigration v1.2.0
 // Creator: LaLa Labs
 
 pragma solidity ^0.8.14;
@@ -26,7 +26,7 @@ contract OpenSeaMigration is ERC1155Receiver {
 
     // migration of a single token
     function onERC1155Received(
-        address /* operator */,
+        address operator,
         address from,
         uint256 id,
         uint256 value,
@@ -35,12 +35,19 @@ contract OpenSeaMigration is ERC1155Receiver {
         require(msg.sender == address(OPENSEA_STORE), 'OSMigration: Only accepting OpenSea assets');
 
         _migrateLegacyToken(from, id, value, data);
+
+        uint256[] memory ids = new uint256[](1);
+        ids[0] = id;
+        uint256[] memory values = new uint256[](1);
+        values[0] = value;
+        _onMigrationCompleted(operator, from, ids, values, data);
+
         return IERC1155Receiver.onERC1155Received.selector;
     }
 
     // migration of multiple tokens
     function onERC1155BatchReceived(
-        address /* operator */,
+        address operator,
         address from,
         uint256[] calldata ids,
         uint256[] calldata values,
@@ -48,9 +55,12 @@ contract OpenSeaMigration is ERC1155Receiver {
     ) external override returns (bytes4) {
         require(msg.sender == address(OPENSEA_STORE), 'OSMigration: Only accepting OpenSea assets');
 
-        for (uint256 i; i < ids.length; i++) {
+        for (uint256 i; i < ids.length; ++i) {
             _migrateLegacyToken(from, ids[i], values[i], data);
         }
+
+        _onMigrationCompleted(operator, from, ids, values, data);
+
         return this.onERC1155BatchReceived.selector;
     }
 
@@ -91,6 +101,23 @@ contract OpenSeaMigration is ERC1155Receiver {
     ) internal virtual {
         revert('OSMigration: Not implemented');
     }
+
+    /**
+     * @dev Callback invoked after tokens have been processed. Exposes the same info as ERC1155Receiver.
+     *
+     * @param operator The address which initiated the migration (i.e. msg.sender)
+     * @param from The address which previously owned the token
+     * @param ids An array containing ids of each token being transferred (order and length must match values array)
+     * @param values An array containing amounts of each token being transferred (order and length must match ids array)
+     * @param data Additional data with no specified format
+     */
+    function _onMigrationCompleted(
+        address operator,
+        address from,
+        uint256[] memory ids,
+        uint256[] memory values,
+        bytes calldata data
+    ) internal virtual { }
 
     /**
      * @dev Burn the token. Since OpenSea Shared Storefront does not support real burn, transfer to dead address.
