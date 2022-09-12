@@ -28,9 +28,9 @@ contract MyMigration is OpenSeaMigration {
   NewContract public immutable NEW_CONTRACT;
 
   constructor(
-    address newContractAddress,
-    address openSeaStoreAddress,
-    address makerAddress
+    address newContractAddress, // your new contract to which the NFT should be migrated
+    address openSeaStoreAddress, // mainnet:0x495f947276749Ce646f68AC8c248420045cb7b5e rinkeby:0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656
+    address makerAddress // the address of the minter/creator of the original collection on OpenSea
   ) OpenSeaMigration(openSeaStoreAddress, makerAddress) {
     NEW_CONTRACT = NewContract(newContractAddress);
   }
