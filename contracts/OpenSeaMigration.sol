@@ -161,9 +161,9 @@ abstract contract OpenSeaMigration is ERC1155Receiver {
             revert('OSMigration: Invalid Maker');
         }
 
-        // last 5 bytes: should always be 1
-        if (legacyTokenId & 0x000000000000000000000000000000000000000000000000000000ffffffffff != 1) {
-            revert('OSMigration: Invalid Checksum');
+        // last 5 bytes: supply
+        if (legacyTokenId & 0x000000000000000000000000000000000000000000000000000000ffffffffff == 0) {
+            revert('OSMigration: Invalid Supply');
         }
 
         // middle 7 bytes: nft id (serial for all NFTs that MAKER minted)
