@@ -9,7 +9,7 @@ You can pull directly from git and the latest tag:
 
 _package.json_
 ```
-"opensea-migration": "git+https://github.com/lala-labs/opensea-migration.git#1.1.2",
+"opensea-migration": "git+https://github.com/lala-labs/opensea-migration.git#2.0.0",
 ```
 
 ## Sample Migration Contract
